@@ -1,0 +1,26 @@
+{
+  "name": "icon-svg-transition",
+  "version": "0.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/luwenxull/icon-svg-transition",
+  "author": "luwenxull <992273307@qq.com>",
+  "scripts": {
+    "build": "./node_modules/.bin/tsc",
+    "start": "webpack-dev-server"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/d3-path": "^1.0.6",
+    "html-webpack-plugin": "^2.30.1",
+    "source-map-loader": "^0.2.3",
+    "ts-loader": "^3.1.1",
+    "ts-node": "^3.3.0",
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.1",
+    "webpack": "^3.8.1",
+    "webpack-dev-server": "^2.9.4"
+  },
+  "dependencies": {
+    "d3-path": "^1.0.5"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "outDir": "./build",
+    "target": "es2015",
+    "module": "commonjs",
+    "jsx": "react",
+    "declaration": true,
+    "pretty": true,
+    "listFiles": true
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules/"
+  ]
+}

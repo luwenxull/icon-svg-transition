@@ -1,0 +1,14 @@
+.vscode
+.idea
+node_modules
+src
+dist
+test
+template
+.gitignore
+.npmignore
+tsconfig.json
+tslint.json
+webpack.config.json
+yarn.lock
+yarn-error.log
