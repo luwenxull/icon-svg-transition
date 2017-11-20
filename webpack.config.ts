@@ -1,11 +1,10 @@
-
 import * as HtmlWebpackPlugin from 'html-webpack-plugin'
 import * as path from 'path'
 import * as webpack from 'webpack'
 
 const config: webpack.Configuration = {
   entry: [
-    './test/index.tsx',
+    './test/index.ts',
   ],
   output: {
     filename: 'bundle.js',
@@ -34,7 +33,7 @@ const config: webpack.Configuration = {
     loaders: [
       // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
       {
-        test: /\.tsx?$/,
+        test: /\.ts?$/,
         loaders: [
           'ts-loader',
         ],
