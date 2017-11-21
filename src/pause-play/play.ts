@@ -1,10 +1,10 @@
 import { path } from 'd3-path'
-export default function pause(): string {
+export default function play(): string {
   const pathSerializer = path()
-  pathSerializer.moveTo(8, 8)
-  pathSerializer.lineTo(8, 16)
-  pathSerializer.moveTo(12, 8)
-  pathSerializer.lineTo(12, 12)
-  pathSerializer.lineTo(12, 16)
+  pathSerializer.moveTo(10, 8)
+  pathSerializer.lineTo(10, 16)
+  pathSerializer.moveTo(10, 8)
+  pathSerializer.lineTo(14, 12)
+  pathSerializer.lineTo(10, 16)
   return pathSerializer.toString()
 }

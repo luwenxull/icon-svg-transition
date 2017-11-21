@@ -1,32 +1,51 @@
 import { select } from 'd3-selection'
-import Icon, { IStateSingle } from '../Icon'
+import * as _ from 'lodash'
+import Icon, { IIconOption, IIconStateSingle } from '../Icon'
 import pause from './pause'
 import play from './play'
 
 export type IPausePlayStateIndex = 'PLAY' | 'PAUSE'
 
 export type IPausePlayState = {
-  [state in keyof IPausePlayStateIndex]: IStateSingle
+  [prop in IPausePlayStateIndex]: IIconStateSingle
+}
+
+export interface IPausePlayOption extends IIconOption {
+  active: IPausePlayStateIndex
 }
 
 export default class PausePlayIcon extends Icon {
-  protected _active: IPausePlayStateIndex
-  constructor(active: IPausePlayStateIndex) {
-    super()
-    this._active = active
+  protected active: IPausePlayStateIndex
+  protected state: IPausePlayState
+  constructor(options: IPausePlayOption) {
+    super(options)
     this.state = {
       PLAY: {
         path: play(),
+        style: {
+          fill: 'none',
+          stroke: this.color,
+        },
         transfer: () => {
-          this._active = 'PAUSE'
+          this.active = 'PAUSE'
         },
       },
       PAUSE: {
         path: pause(),
+        style: {
+          fill: 'none',
+          stroke: this.color,
+        },
         transfer: () => {
-          this._active = 'PLAY'
+          this.active = 'PLAY'
         },
       },
     }
+  }
+
+  protected applyColor(): void {
+    _.forEach(this.state[this.active].style, (value, key) => {
+      this.$icon.style(key, value)
+    })
   }
 }

@@ -4,41 +4,52 @@ export interface IIcon {
   apply(parent: HTMLElement): void
 }
 
-export interface IStateSingle {
+export interface IIconStateSingle {
   path: string
+  style: object
   transfer(): void
 }
 
 export interface IIconState {
-  [prop: string]: IStateSingle
+  [prop: string]: IIconStateSingle
+}
+
+export interface IIconOption {
+  active: keyof IIconState
+  color: string
 }
 
 export default abstract class Icon implements IIcon {
+  protected active: keyof IIconState
+  protected color: string
   protected state: IIconState
-  protected _active: keyof IIconState
   protected $svg: Selection<HTMLElement, any, HTMLElement, any>
   protected $icon: Selection<HTMLElement, any, HTMLElement, any>
-  constructor() {
+  constructor(options: IIconOption) {
+    this.$svg = null
     this.$icon = null
+    this.active = options.active
+    this.color = options.color
   }
 
-  public apply(parent: HTMLElement) {
+  public apply(parent: HTMLElement): void {
     this.$svg = select(parent).append('svg')
-    this.$svg.attr('viewbox', '0 0 24 24')
+    this.$svg.attr('width', 40).attr('height', 40).attr('viewBox', '0 0 24 24')
     this.$icon = this.$svg.append('path')
     this.$icon
       .style('transition', '0.4s')
-      .attr('d', this.state[this._active].path)
-      .attr('stroke', 'red')
-      .attr('stroke-width', 2)
+      .attr('d', this.state[this.active].path)
     this.listenToClick()
+    this.applyColor()
   }
 
   protected listenToClick() {
     this.$svg.on('click', () => {
-      this.state[this._active].transfer()
-      this.$icon.attr('d', this.state[this._active].path)
+      this.state[this.active].transfer()
+      this.$icon.attr('d', this.state[this.active].path)
+      this.applyColor()
     })
   }
 
+  protected abstract applyColor(): void
 }
