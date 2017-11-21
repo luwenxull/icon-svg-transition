@@ -42,10 +42,4 @@ export default class PausePlayIcon extends Icon {
       },
     }
   }
-
-  protected applyColor(): void {
-    _.forEach(this.state[this.active].style, (value, key) => {
-      this.$icon.style(key, value)
-    })
-  }
 }

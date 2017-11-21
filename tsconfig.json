@@ -6,7 +6,8 @@
     "jsx": "react",
     "declaration": true,
     "pretty": true,
-    "listFiles": true
+    "listFiles": true,
+    "experimentalDecorators": true
   },
   "include": [
     "src"

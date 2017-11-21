@@ -1,4 +1,5 @@
 import { select, Selection } from 'd3-selection'
+import * as _ from 'lodash'
 
 export interface IIcon {
   apply(parent: HTMLElement): void
@@ -39,17 +40,21 @@ export default abstract class Icon implements IIcon {
     this.$icon
       .style('transition', '0.4s')
       .attr('d', this.state[this.active].path)
-    this.listenToClick()
+    this.$svg.on('click', () => {
+      this.clickCallback()
+    })
     this.applyColor()
   }
 
-  protected listenToClick() {
-    this.$svg.on('click', () => {
-      this.state[this.active].transfer()
-      this.$icon.attr('d', this.state[this.active].path)
-      this.applyColor()
-    })
+  protected clickCallback(): void {
+    this.state[this.active].transfer()
+    this.$icon.attr('d', this.state[this.active].path)
+    this.applyColor()
   }
 
-  protected abstract applyColor(): void
+  protected applyColor(): void {
+    _.forEach(this.state[this.active].style, (value, key) => {
+      this.$icon.style(key, value)
+    })
+  }
 }
