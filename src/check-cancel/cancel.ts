@@ -5,8 +5,8 @@ export default function play(): string {
   const height = 24
   const padding = 3
   pathSerializer.moveTo(padding, padding)
-  pathSerializer.lineTo(width - padding, height - padding)
+  pathSerializer.quadraticCurveTo(padding, padding, width - padding, height - padding)
   pathSerializer.moveTo(padding, height - padding)
-  pathSerializer.lineTo(width - padding, padding)
+  pathSerializer.quadraticCurveTo(padding, height - padding, width - padding, padding)
   return pathSerializer.toString()
 }

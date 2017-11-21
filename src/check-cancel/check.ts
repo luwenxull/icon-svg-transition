@@ -4,9 +4,9 @@ export default function pause(): string {
   const width = 24
   const height = 24
   const padding = 3
-  pathSerializer.moveTo(padding, padding * 3)
-  pathSerializer.lineTo(padding * 3, height - padding)
   pathSerializer.moveTo(padding * 3, height - padding)
-  pathSerializer.lineTo(width - padding, padding * 2)
+  pathSerializer.quadraticCurveTo(width / 2, height / 2, width - padding, padding * 2)
+  pathSerializer.moveTo(padding, height - padding * 3)
+  pathSerializer.quadraticCurveTo(padding * 2, height - padding * 2, padding * 3, height - padding)
   return pathSerializer.toString()
 }
