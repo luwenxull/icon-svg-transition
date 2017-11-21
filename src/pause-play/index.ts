@@ -23,7 +23,7 @@ export default class PausePlayIcon extends Icon {
       PLAY: {
         path: play(),
         style: {
-          fill: 'none',
+          fill: this.color,
           stroke: this.color,
         },
         transfer: () => {
