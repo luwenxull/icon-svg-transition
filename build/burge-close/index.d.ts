@@ -11,6 +11,5 @@ export default class BurgeCloseIcon extends Icon {
     protected state: IBurgeCloseState;
     private rotate;
     constructor(options: IBurgeCloseOption);
-    apply(parent: HTMLElement): void;
     protected clickCallback(): void;
 }

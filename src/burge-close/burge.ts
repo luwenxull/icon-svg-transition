@@ -1,11 +1,14 @@
 import { path } from 'd3-path'
 export default function pause(): string {
   const pathSerializer = path()
-  pathSerializer.moveTo(7, 7)
-  pathSerializer.lineTo(17, 7)
-  pathSerializer.moveTo(7, 12)
-  pathSerializer.lineTo(17, 12)
-  pathSerializer.moveTo(7, 17)
-  pathSerializer.lineTo(17, 17)
+  const width = 24
+  const height = 24
+  const padding = 3
+  pathSerializer.moveTo(padding, padding)
+  pathSerializer.lineTo(width - padding, padding)
+  pathSerializer.moveTo(padding, height / 2)
+  pathSerializer.lineTo(width - padding, height / 2)
+  pathSerializer.moveTo(padding, height - padding)
+  pathSerializer.lineTo(width - padding, height - padding)
   return pathSerializer.toString()
 }

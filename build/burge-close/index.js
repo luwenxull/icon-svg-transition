@@ -30,10 +30,6 @@ class BurgeCloseIcon extends Icon_1.default {
             },
         };
     }
-    apply(parent) {
-        super.apply(parent);
-        this.$icon.style('transform-origin', '50%');
-    }
     clickCallback() {
         super.clickCallback();
         this.rotate += 180;

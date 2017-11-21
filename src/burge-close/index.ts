@@ -43,11 +43,6 @@ export default class BurgeCloseIcon extends Icon {
     }
   }
 
-  public apply(parent: HTMLElement) {
-    super.apply(parent)
-    this.$icon.style('transform-origin', '50%')
-  }
-
   protected clickCallback() {
     super.clickCallback()
     this.rotate += 180
