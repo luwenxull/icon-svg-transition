@@ -1,6 +1,6 @@
 {
   "name": "icon-svg-transition",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "index.js",
   "repository": "https://github.com/luwenxull/icon-svg-transition",
   "author": "luwenxull <992273307@qq.com>",
@@ -10,6 +10,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@types/animejs": "^2.0.0",
     "@types/d3-path": "^1.0.6",
     "@types/d3-selection": "^1.1.0",
     "@types/lodash": "^4.14.85",
@@ -24,6 +25,7 @@
     "webpack-dev-server": "^2.9.4"
   },
   "dependencies": {
+    "animejs": "^2.2.0",
     "d3-path": "^1.0.5",
     "d3-selection": "^1.1.0",
     "lodash": "^4.17.4"

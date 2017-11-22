@@ -1,5 +1,6 @@
+import anime = require('animejs')
 import { select, Selection } from 'd3-selection'
-import * as _ from 'lodash'
+import _ = require('lodash')
 
 export interface IIcon {
   apply(parent: HTMLElement): void
@@ -20,7 +21,7 @@ export interface IIconOption {
   color?: string
   size?: number[]
   strokeWidth?: number
-  speed?: number
+  duration?: number
 }
 
 export default abstract class Icon implements IIcon {
@@ -29,7 +30,7 @@ export default abstract class Icon implements IIcon {
   protected size: number[]
   protected state: IIconState
   protected strokeWidth: number
-  protected speed: number
+  protected duration: number
   protected $svg: Selection<HTMLElement, any, HTMLElement, any>
   protected $icon: Selection<HTMLElement, any, HTMLElement, any>
   constructor(options: IIconOption) {
@@ -39,7 +40,7 @@ export default abstract class Icon implements IIcon {
     this.color = options.color || '#000'
     this.size = options.size || [24, 24]
     this.strokeWidth = options.strokeWidth || 1
-    this.speed = options.speed || 0.4
+    this.duration = options.duration || 400
   }
 
   public apply(parent: HTMLElement): void {
@@ -47,7 +48,7 @@ export default abstract class Icon implements IIcon {
     this.$svg.attr('width', this.size[0]).attr('height', this.size[1]).attr('viewBox', '0 0 24 24')
     this.$icon = this.$svg.append('path')
     this.$icon
-      .style('transition', `${this.speed}s`)
+      // .style('transition', `${this.speed}s`)
       .style('stroke-width', this.strokeWidth)
       .style('stroke-lineCap', 'round')
       .style('transform-origin', '50%')
@@ -59,8 +60,18 @@ export default abstract class Icon implements IIcon {
   }
 
   protected clickCallback(): void {
+    const from = this.state[this.active].path
     this.state[this.active].transfer()
-    this.$icon.attr('d', this.state[this.active].path)
+    const to = this.state[this.active].path
+    anime({
+      targets: this.$icon.node(),
+      d: [
+        from,
+        to,
+      ],
+      easing: 'linear',
+      duration: this.duration,
+    })
     this.applyColor()
   }
 

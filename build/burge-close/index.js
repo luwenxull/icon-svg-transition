@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const anime = require("animejs");
 const Icon_1 = require("../Icon");
 const burge_1 = require("./burge");
 const close_1 = require("./close");
@@ -33,7 +34,12 @@ class BurgeCloseIcon extends Icon_1.default {
     clickCallback() {
         super.clickCallback();
         this.rotate += 180;
-        this.$icon.style('transform', `rotate(${this.rotate}deg)`);
+        anime({
+            targets: this.$icon.node(),
+            rotate: this.rotate,
+            easing: 'linear',
+            duration: this.duration,
+        });
     }
 }
 exports.default = BurgeCloseIcon;

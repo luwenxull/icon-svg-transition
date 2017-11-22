@@ -3,6 +3,7 @@
     "outDir": "./build",
     "target": "es2015",
     "module": "commonjs",
+    "newLine": "LF",
     "jsx": "react",
     "declaration": true,
     "pretty": true,

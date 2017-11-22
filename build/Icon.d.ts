@@ -15,7 +15,7 @@ export interface IIconOption {
     color?: string;
     size?: number[];
     strokeWidth?: number;
-    speed?: number;
+    duration?: number;
 }
 export default abstract class Icon implements IIcon {
     protected active: keyof IIconState;
@@ -23,7 +23,7 @@ export default abstract class Icon implements IIcon {
     protected size: number[];
     protected state: IIconState;
     protected strokeWidth: number;
-    protected speed: number;
+    protected duration: number;
     protected $svg: Selection<HTMLElement, any, HTMLElement, any>;
     protected $icon: Selection<HTMLElement, any, HTMLElement, any>;
     constructor(options: IIconOption);
