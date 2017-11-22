@@ -1,33 +1,37 @@
+/// <reference types="animejs" />
+import anime = require('animejs');
 import { Selection } from 'd3-selection';
 export interface IIcon {
     apply(parent: HTMLElement): void;
 }
-export interface IIconStateSingle {
+export interface IIconState {
     path: string;
     style: object;
-    transfer(): void;
+    click(): keyof IIconStates;
 }
-export interface IIconState {
-    [prop: string]: IIconStateSingle;
+export interface IIconStates {
+    [prop: string]: IIconState;
 }
 export interface IIconOption {
-    active: keyof IIconState;
+    active: keyof IIconStates;
     color?: string;
     size?: number[];
     strokeWidth?: number;
     duration?: number;
 }
 export default abstract class Icon implements IIcon {
-    protected active: keyof IIconState;
+    protected active: keyof IIconStates;
     protected color: string;
     protected size: number[];
-    protected state: IIconState;
     protected strokeWidth: number;
     protected duration: number;
+    protected states: IIconStates;
+    protected anime: anime.AnimeInstance;
     protected $svg: Selection<HTMLElement, any, HTMLElement, any>;
     protected $icon: Selection<HTMLElement, any, HTMLElement, any>;
     constructor(options: IIconOption);
     apply(parent: HTMLElement): void;
-    protected clickCallback(): void;
+    protected stateTransform(action: string): void;
+    protected animate(from: any, to: any): anime.AnimeInstance;
     protected applyColor(): void;
 }

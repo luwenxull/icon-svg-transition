@@ -6,18 +6,18 @@ export interface IIcon {
   apply(parent: HTMLElement): void
 }
 
-export interface IIconStateSingle {
+export interface IIconState {
   path: string
   style: object
-  transfer(): void
+  click(): keyof IIconStates
 }
 
-export interface IIconState {
-  [prop: string]: IIconStateSingle
+export interface IIconStates {
+  [prop: string]: IIconState
 }
 
 export interface IIconOption {
-  active: keyof IIconState
+  active: keyof IIconStates
   color?: string
   size?: number[]
   strokeWidth?: number
@@ -25,22 +25,17 @@ export interface IIconOption {
 }
 
 export default abstract class Icon implements IIcon {
-  protected active: keyof IIconState
-  protected color: string
-  protected size: number[]
-  protected state: IIconState
-  protected strokeWidth: number
-  protected duration: number
-  protected $svg: Selection<HTMLElement, any, HTMLElement, any>
-  protected $icon: Selection<HTMLElement, any, HTMLElement, any>
+  protected active: keyof IIconStates
+  protected color: string = '#000'
+  protected size: number[] = [24, 24]
+  protected strokeWidth: number = 1
+  protected duration: number = 400
+  protected states: IIconStates = null
+  protected anime: anime.AnimeInstance = null
+  protected $svg: Selection<HTMLElement, any, HTMLElement, any> = null
+  protected $icon: Selection<HTMLElement, any, HTMLElement, any> = null
   constructor(options: IIconOption) {
-    this.$svg = null
-    this.$icon = null
-    this.active = options.active
-    this.color = options.color || '#000'
-    this.size = options.size || [24, 24]
-    this.strokeWidth = options.strokeWidth || 1
-    this.duration = options.duration || 400
+    _.assign(this, options)
   }
 
   public apply(parent: HTMLElement): void {
@@ -48,35 +43,38 @@ export default abstract class Icon implements IIcon {
     this.$svg.attr('width', this.size[0]).attr('height', this.size[1]).attr('viewBox', '0 0 24 24')
     this.$icon = this.$svg.append('path')
     this.$icon
-      // .style('transition', `${this.speed}s`)
       .style('stroke-width', this.strokeWidth)
       .style('stroke-lineCap', 'round')
       .style('transform-origin', '50%')
-      .attr('d', this.state[this.active].path)
+      .attr('d', this.states[this.active].path)
     this.$svg.on('click', () => {
-      this.clickCallback()
+      const from = this.states[this.active].path
+      this.stateTransform('click')
+      const to = this.states[this.active].path
+      this.anime = this.animate(from, to)
+      this.applyColor()
     })
     this.applyColor()
   }
 
-  protected clickCallback(): void {
-    const from = this.state[this.active].path
-    this.state[this.active].transfer()
-    const to = this.state[this.active].path
-    anime({
+  protected stateTransform(action: string): void {
+    this.active = this.states[this.active][action]()
+  }
+
+  protected animate(from, to): anime.AnimeInstance {
+    return anime({
       targets: this.$icon.node(),
       d: [
         from,
         to,
       ],
-      easing: 'linear',
+      easing: 'easeOutCubic',
       duration: this.duration,
     })
-    this.applyColor()
   }
 
   protected applyColor(): void {
-    _.forEach(this.state[this.active].style, (value, key) => {
+    _.forEach(this.states[this.active].style, (value, key) => {
       this.$icon.style(key, value)
     })
   }

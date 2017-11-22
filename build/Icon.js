@@ -5,13 +5,15 @@ const d3_selection_1 = require("d3-selection");
 const _ = require("lodash");
 class Icon {
     constructor(options) {
+        this.color = '#000';
+        this.size = [24, 24];
+        this.strokeWidth = 1;
+        this.duration = 400;
+        this.states = null;
+        this.anime = null;
         this.$svg = null;
         this.$icon = null;
-        this.active = options.active;
-        this.color = options.color || '#000';
-        this.size = options.size || [24, 24];
-        this.strokeWidth = options.strokeWidth || 1;
-        this.duration = options.duration || 400;
+        _.assign(this, options);
     }
     apply(parent) {
         this.$svg = d3_selection_1.select(parent).append('svg');
@@ -21,29 +23,32 @@ class Icon {
             .style('stroke-width', this.strokeWidth)
             .style('stroke-lineCap', 'round')
             .style('transform-origin', '50%')
-            .attr('d', this.state[this.active].path);
+            .attr('d', this.states[this.active].path);
         this.$svg.on('click', () => {
-            this.clickCallback();
+            const from = this.states[this.active].path;
+            this.stateTransform('click');
+            const to = this.states[this.active].path;
+            this.anime = this.animate(from, to);
+            this.applyColor();
         });
         this.applyColor();
     }
-    clickCallback() {
-        const from = this.state[this.active].path;
-        this.state[this.active].transfer();
-        const to = this.state[this.active].path;
-        anime({
+    stateTransform(action) {
+        this.active = this.states[this.active][action]();
+    }
+    animate(from, to) {
+        return anime({
             targets: this.$icon.node(),
             d: [
                 from,
                 to,
             ],
-            easing: 'linear',
+            easing: 'easeOutCubic',
             duration: this.duration,
         });
-        this.applyColor();
     }
     applyColor() {
-        _.forEach(this.state[this.active].style, (value, key) => {
+        _.forEach(this.states[this.active].style, (value, key) => {
             this.$icon.style(key, value);
         });
     }

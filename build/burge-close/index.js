@@ -8,15 +8,15 @@ class BurgeCloseIcon extends Icon_1.default {
     constructor(options) {
         super(options);
         this.rotate = 0;
-        this.state = {
+        this.states = {
             BURGE: {
                 path: burge_1.default(),
                 style: {
                     fill: 'none',
                     stroke: this.color,
                 },
-                transfer: () => {
-                    this.active = 'CLOSE';
+                click: () => {
+                    return 'CLOSE';
                 },
             },
             CLOSE: {
@@ -25,14 +25,13 @@ class BurgeCloseIcon extends Icon_1.default {
                     fill: 'none',
                     stroke: this.color,
                 },
-                transfer: () => {
-                    this.active = 'BURGE';
+                click: () => {
+                    return 'BURGE';
                 },
             },
         };
     }
-    clickCallback() {
-        super.clickCallback();
+    animate(from, to) {
         this.rotate += 180;
         anime({
             targets: this.$icon.node(),
@@ -40,6 +39,7 @@ class BurgeCloseIcon extends Icon_1.default {
             easing: 'linear',
             duration: this.duration,
         });
+        return super.animate(from, to);
     }
 }
 exports.default = BurgeCloseIcon;

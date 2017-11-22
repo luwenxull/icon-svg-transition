@@ -6,15 +6,15 @@ const play_1 = require("./play");
 class PausePlayIcon extends Icon_1.default {
     constructor(options) {
         super(options);
-        this.state = {
+        this.states = {
             PLAY: {
                 path: play_1.default(),
                 style: {
                     fill: this.color,
                     stroke: this.color,
                 },
-                transfer: () => {
-                    this.active = 'PAUSE';
+                click: () => {
+                    return 'PAUSE';
                 },
             },
             PAUSE: {
@@ -23,8 +23,8 @@ class PausePlayIcon extends Icon_1.default {
                     fill: 'none',
                     stroke: this.color,
                 },
-                transfer: () => {
-                    this.active = 'PLAY';
+                click: () => {
+                    return 'PLAY';
                 },
             },
         };

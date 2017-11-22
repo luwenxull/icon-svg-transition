@@ -1,13 +1,16 @@
 import { select } from 'd3-selection'
-import * as _ from 'lodash'
-import Icon, { IIconOption, IIconStateSingle } from '../Icon'
+import Icon, { IIconOption, IIconState, IIconStates } from '../Icon'
 import pause from './pause'
 import play from './play'
 
 export type IPausePlayStateIndex = 'PLAY' | 'PAUSE'
 
-export type IPausePlayState = {
-  [prop in IPausePlayStateIndex]: IIconStateSingle
+export type IPausePlayStates = {
+  [prop in IPausePlayStateIndex]: IPausePlayState
+}
+
+export interface IPausePlayState extends IIconState {
+  click(): IPausePlayStateIndex
 }
 
 export interface IPausePlayOption extends IIconOption {
@@ -16,18 +19,18 @@ export interface IPausePlayOption extends IIconOption {
 
 export default class PausePlayIcon extends Icon {
   protected active: IPausePlayStateIndex
-  protected state: IPausePlayState
+  protected states: IPausePlayStates
   constructor(options: IPausePlayOption) {
     super(options)
-    this.state = {
+    this.states = {
       PLAY: {
         path: play(),
         style: {
           fill: this.color,
           stroke: this.color,
         },
-        transfer: () => {
-          this.active = 'PAUSE'
+        click: () => {
+          return 'PAUSE'
         },
       },
       PAUSE: {
@@ -36,8 +39,8 @@ export default class PausePlayIcon extends Icon {
           fill: 'none',
           stroke: this.color,
         },
-        transfer: () => {
-          this.active = 'PLAY'
+        click: () => {
+          return 'PLAY'
         },
       },
     }

@@ -1,15 +1,20 @@
-import Icon, { IIconOption, IIconStateSingle } from '../Icon';
+/// <reference types="animejs" />
+import anime = require('animejs');
+import Icon, { IIconOption, IIconState } from '../Icon';
 export declare type IBurgeCloseStateIndex = 'BURGE' | 'CLOSE';
-export declare type IBurgeCloseState = {
-    [prop in IBurgeCloseStateIndex]: IIconStateSingle;
+export declare type IBurgeCloseStates = {
+    [prop in IBurgeCloseStateIndex]: IBurgeCloseState;
 };
+export interface IBurgeCloseState extends IIconState {
+    click(): IBurgeCloseStateIndex;
+}
 export interface IBurgeCloseOption extends IIconOption {
     active: IBurgeCloseStateIndex;
 }
 export default class BurgeCloseIcon extends Icon {
     protected active: IBurgeCloseStateIndex;
-    protected state: IBurgeCloseState;
+    protected states: IBurgeCloseStates;
     private rotate;
     constructor(options: IBurgeCloseOption);
-    protected clickCallback(): void;
+    protected animate(from: any, to: any): anime.AnimeInstance;
 }

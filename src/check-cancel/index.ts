@@ -1,12 +1,16 @@
 import { select } from 'd3-selection'
-import Icon, { IIconOption, IIconStateSingle } from '../Icon'
+import Icon, { IIconOption, IIconState, IIconStates } from '../Icon'
 import cancel from './cancel'
 import check from './check'
 
 export type ICheckCancelStateIndex = 'CHECK' | 'CANCEL'
 
-export type ICheckCancelState = {
-  [prop in ICheckCancelStateIndex]: IIconStateSingle
+export type ICheckCancelStates = {
+  [prop in ICheckCancelStateIndex]: ICheckCancelState
+}
+
+export interface ICheckCancelState extends IIconState {
+  click(): ICheckCancelStateIndex
 }
 
 export interface ICheckCancelOption extends IIconOption {
@@ -15,19 +19,19 @@ export interface ICheckCancelOption extends IIconOption {
 
 export default class CheckCancelIcon extends Icon {
   protected active: ICheckCancelStateIndex
-  protected state: ICheckCancelState
+  protected states: ICheckCancelStates
   private rotate = 0
   constructor(options: ICheckCancelOption) {
     super(options)
-    this.state = {
+    this.states = {
       CHECK: {
         path: check(),
         style: {
           fill: 'none',
           stroke: this.color,
         },
-        transfer: () => {
-          this.active = 'CANCEL'
+        click: () => {
+          return 'CANCEL'
         },
       },
       CANCEL: {
@@ -36,8 +40,8 @@ export default class CheckCancelIcon extends Icon {
           fill: 'none',
           stroke: this.color,
         },
-        transfer: () => {
-          this.active = 'CHECK'
+        click: () => {
+          return 'CHECK'
         },
       },
     }

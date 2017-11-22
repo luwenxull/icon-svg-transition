@@ -7,15 +7,15 @@ class CheckCancelIcon extends Icon_1.default {
     constructor(options) {
         super(options);
         this.rotate = 0;
-        this.state = {
+        this.states = {
             CHECK: {
                 path: check_1.default(),
                 style: {
                     fill: 'none',
                     stroke: this.color,
                 },
-                transfer: () => {
-                    this.active = 'CANCEL';
+                click: () => {
+                    return 'CANCEL';
                 },
             },
             CANCEL: {
@@ -24,8 +24,8 @@ class CheckCancelIcon extends Icon_1.default {
                     fill: 'none',
                     stroke: this.color,
                 },
-                transfer: () => {
-                    this.active = 'CHECK';
+                click: () => {
+                    return 'CHECK';
                 },
             },
         };
