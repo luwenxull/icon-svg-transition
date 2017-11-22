@@ -31,15 +31,15 @@ class BurgeCloseIcon extends Icon_1.default {
             },
         };
     }
-    animate(from, to) {
+    animate() {
         this.rotate += 180;
         anime({
             targets: this.$icon.node(),
             rotate: this.rotate,
-            easing: 'linear',
+            easing: 'easeOutCubic',
             duration: this.duration,
         });
-        return super.animate(from, to);
+        super.animate();
     }
 }
 exports.default = BurgeCloseIcon;

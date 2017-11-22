@@ -48,14 +48,14 @@ export default class BurgeCloseIcon extends Icon {
     }
   }
 
-  protected animate(from, to): anime.AnimeInstance {
+  protected animate() {
     this.rotate += 180
     anime({
       targets: this.$icon.node(),
       rotate: this.rotate,
-      easing: 'linear',
+      easing: 'easeOutCubic',
       duration: this.duration,
     })
-    return super.animate(from, to)
+    super.animate()
   }
 }

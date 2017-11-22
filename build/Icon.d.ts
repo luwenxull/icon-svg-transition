@@ -20,18 +20,19 @@ export interface IIconOption {
     duration?: number;
 }
 export default abstract class Icon implements IIcon {
-    protected active: keyof IIconStates;
     protected color: string;
     protected size: number[];
     protected strokeWidth: number;
     protected duration: number;
     protected states: IIconStates;
+    protected active: keyof IIconStates;
+    protected _animing: boolean;
     protected anime: anime.AnimeInstance;
     protected $svg: Selection<HTMLElement, any, HTMLElement, any>;
     protected $icon: Selection<HTMLElement, any, HTMLElement, any>;
     constructor(options: IIconOption);
     apply(parent: HTMLElement): void;
     protected stateTransform(action: string): void;
-    protected animate(from: any, to: any): anime.AnimeInstance;
+    protected animate(): void;
     protected applyColor(): void;
 }

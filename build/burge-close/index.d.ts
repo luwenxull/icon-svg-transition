@@ -1,5 +1,3 @@
-/// <reference types="animejs" />
-import anime = require('animejs');
 import Icon, { IIconOption, IIconState } from '../Icon';
 export declare type IBurgeCloseStateIndex = 'BURGE' | 'CLOSE';
 export declare type IBurgeCloseStates = {
@@ -16,5 +14,5 @@ export default class BurgeCloseIcon extends Icon {
     protected states: IBurgeCloseStates;
     private rotate;
     constructor(options: IBurgeCloseOption);
-    protected animate(from: any, to: any): anime.AnimeInstance;
+    protected animate(): void;
 }

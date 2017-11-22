@@ -25,12 +25,13 @@ export interface IIconOption {
 }
 
 export default abstract class Icon implements IIcon {
-  protected active: keyof IIconStates
   protected color: string = '#000'
   protected size: number[] = [24, 24]
   protected strokeWidth: number = 1
   protected duration: number = 400
   protected states: IIconStates = null
+  protected active: keyof IIconStates
+  protected _animing: boolean = false
   protected anime: anime.AnimeInstance = null
   protected $svg: Selection<HTMLElement, any, HTMLElement, any> = null
   protected $icon: Selection<HTMLElement, any, HTMLElement, any> = null
@@ -48,10 +49,7 @@ export default abstract class Icon implements IIcon {
       .style('transform-origin', '50%')
       .attr('d', this.states[this.active].path)
     this.$svg.on('click', () => {
-      const from = this.states[this.active].path
-      this.stateTransform('click')
-      const to = this.states[this.active].path
-      this.anime = this.animate(from, to)
+      this.animate()
       this.applyColor()
     })
     this.applyColor()
@@ -61,8 +59,15 @@ export default abstract class Icon implements IIcon {
     this.active = this.states[this.active][action]()
   }
 
-  protected animate(from, to): anime.AnimeInstance {
-    return anime({
+  protected animate(): void {
+    let from = this.states[this.active].path
+    if (this._animing) {
+      from = this.$icon.attr('d')
+      anime.remove(this.$icon.node())
+    }
+    this.stateTransform('click')
+    const to = this.states[this.active].path
+    this.anime = anime({
       targets: this.$icon.node(),
       d: [
         from,
@@ -70,6 +75,12 @@ export default abstract class Icon implements IIcon {
       ],
       easing: 'easeOutCubic',
       duration: this.duration,
+      begin: () => {
+        this._animing = true
+      },
+      complete: () => {
+        this._animing = false
+      },
     })
   }
 

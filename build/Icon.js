@@ -10,6 +10,7 @@ class Icon {
         this.strokeWidth = 1;
         this.duration = 400;
         this.states = null;
+        this._animing = false;
         this.anime = null;
         this.$svg = null;
         this.$icon = null;
@@ -25,10 +26,7 @@ class Icon {
             .style('transform-origin', '50%')
             .attr('d', this.states[this.active].path);
         this.$svg.on('click', () => {
-            const from = this.states[this.active].path;
-            this.stateTransform('click');
-            const to = this.states[this.active].path;
-            this.anime = this.animate(from, to);
+            this.animate();
             this.applyColor();
         });
         this.applyColor();
@@ -36,8 +34,15 @@ class Icon {
     stateTransform(action) {
         this.active = this.states[this.active][action]();
     }
-    animate(from, to) {
-        return anime({
+    animate() {
+        let from = this.states[this.active].path;
+        if (this._animing) {
+            from = this.$icon.attr('d');
+            anime.remove(this.$icon.node());
+        }
+        this.stateTransform('click');
+        const to = this.states[this.active].path;
+        this.anime = anime({
             targets: this.$icon.node(),
             d: [
                 from,
@@ -45,6 +50,12 @@ class Icon {
             ],
             easing: 'easeOutCubic',
             duration: this.duration,
+            begin: () => {
+                this._animing = true;
+            },
+            complete: () => {
+                this._animing = false;
+            },
         });
     }
     applyColor() {
