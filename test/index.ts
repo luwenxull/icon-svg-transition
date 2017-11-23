@@ -6,7 +6,6 @@ const playPause = new PausePlay({
   color: '#81af1a',
   size: [60, 60],
   strokeWidth: 2,
-  duration: 5000,
   override: true,
 })
 const burgeClose = new BurgeClose({

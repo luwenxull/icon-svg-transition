@@ -12,7 +12,5 @@ export interface IBurgeCloseOption extends IIconOption {
 export default class BurgeCloseIcon extends Icon {
     protected active: IBurgeCloseStateIndex;
     protected states: IBurgeCloseStates;
-    private rotate;
     constructor(options: IBurgeCloseOption);
-    protected animate(): void;
 }

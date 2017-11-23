@@ -20,7 +20,6 @@ export interface IBurgeCloseOption extends IIconOption {
 export default class BurgeCloseIcon extends Icon {
   protected active: IBurgeCloseStateIndex
   protected states: IBurgeCloseStates
-  private rotate = 0
   constructor(options: IBurgeCloseOption) {
     super(options)
     this.states = {
@@ -45,16 +44,5 @@ export default class BurgeCloseIcon extends Icon {
         },
       },
     }
-  }
-
-  protected animate() {
-    this.rotate += 180
-    anime({
-      targets: this.$icon,
-      rotate: this.rotate,
-      easing: 'easeOutCubic',
-      duration: this.duration,
-    })
-    super.animate()
   }
 }
