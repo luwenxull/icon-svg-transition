@@ -1,6 +1,7 @@
 import anime = require('animejs')
 import { select, Selection } from 'd3-selection'
-import _ = require('lodash')
+import forEach = require('lodash/forEach')
+import { warn } from './util'
 
 export interface IIcon {
   apply(parent: HTMLElement): void
@@ -22,13 +23,17 @@ export interface IIconOption {
   size?: number[]
   strokeWidth?: number
   duration?: number
+  override?: boolean
 }
+
+const allowedOptions = new Set<string>(['active', 'color', 'size', 'strokeWidth', 'duration', 'override'])
 
 export default abstract class Icon implements IIcon {
   protected color: string = '#000'
   protected size: number[] = [24, 24]
   protected strokeWidth: number = 1
   protected duration: number = 400
+  protected override: boolean = false
   protected states: IIconStates = null
   protected active: keyof IIconStates
   protected _animing: boolean = false
@@ -36,7 +41,13 @@ export default abstract class Icon implements IIcon {
   protected $svg: Selection<HTMLElement, any, HTMLElement, any> = null
   protected $icon: Selection<HTMLElement, any, HTMLElement, any> = null
   constructor(options: IIconOption) {
-    _.assign(this, options)
+    forEach(options, (value, key) => {
+      if (allowedOptions.has(key)) {
+        this[key] = value
+      } else {
+        warn('Not allowed option: ' + key)
+      }
+    })
   }
 
   public apply(parent: HTMLElement): void {
@@ -60,6 +71,9 @@ export default abstract class Icon implements IIcon {
   }
 
   protected animate(): void {
+    if (!this.override && this._animing) {
+      return
+    }
     let from = this.states[this.active].path
     if (this._animing) {
       from = this.$icon.attr('d')
@@ -85,7 +99,7 @@ export default abstract class Icon implements IIcon {
   }
 
   protected applyColor(): void {
-    _.forEach(this.states[this.active].style, (value, key) => {
+    forEach(this.states[this.active].style, (value, key) => {
       this.$icon.style(key, value)
     })
   }

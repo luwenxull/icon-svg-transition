@@ -18,12 +18,14 @@ export interface IIconOption {
     size?: number[];
     strokeWidth?: number;
     duration?: number;
+    override?: boolean;
 }
 export default abstract class Icon implements IIcon {
     protected color: string;
     protected size: number[];
     protected strokeWidth: number;
     protected duration: number;
+    protected override: boolean;
     protected states: IIconStates;
     protected active: keyof IIconStates;
     protected _animing: boolean;

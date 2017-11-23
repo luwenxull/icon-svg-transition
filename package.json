@@ -6,6 +6,7 @@
   "author": "luwenxull <992273307@qq.com>",
   "scripts": {
     "build": "./node_modules/.bin/tsc",
+    "pack": "./node_modules/.bin/webpack",
     "start": "webpack-dev-server"
   },
   "license": "MIT",
