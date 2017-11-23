@@ -6,10 +6,15 @@ export interface IIcon {
   apply(parent: HTMLElement): void
 }
 
-export interface IIconState {
+export interface IIconStateAction {
+  enter?(): keyof IIconStates
+  click?(): keyof IIconStates
+  leave?(): keyof IIconStates
+}
+
+export interface IIconState extends IIconStateAction {
   path: string
   style: object
-  click(): keyof IIconStates
 }
 
 export interface IIconStates {
@@ -23,9 +28,10 @@ export interface IIconOption {
   strokeWidth?: number
   duration?: number
   override?: boolean
+  events?: object
 }
 
-const allowedOptions = new Set<string>(['active', 'color', 'size', 'strokeWidth', 'duration', 'override'])
+const allowedOptions = new Set<string>(['active', 'color', 'size', 'strokeWidth', 'duration', 'override', 'events'])
 
 export default abstract class Icon implements IIcon {
   protected color: string = '#000'
@@ -33,6 +39,7 @@ export default abstract class Icon implements IIcon {
   protected strokeWidth: number = 1
   protected duration: number = 400
   protected override: boolean = false
+  protected events: object = null
   protected states: IIconStates = null
   protected active: keyof IIconStates
   protected _animing: boolean = false
@@ -60,43 +67,69 @@ export default abstract class Icon implements IIcon {
     style.setProperty('stroke-width', String(this.strokeWidth))
     style.setProperty('stroke-lineCap', 'round')
     style.setProperty('transform-origin', '50%')
+    this.bindActionEvents()
+    this.applyColor()
+    if (this.events) {
+      forEach(this.events, (callback, key) => {
+        this.$svg.addEventListener(key, () => {
+          callback.call(null, this)
+        })
+      })
+    }
+  }
+
+  protected bindActionEvents() {
     this.$svg.addEventListener('click', () => {
-      this.animate()
+      this.animate('click')
       this.applyColor()
     })
-    this.applyColor()
   }
 
-  protected stateTransform(action: string): void {
-    this.active = this.states[this.active][action]()
+  protected getState(): IIconState {
+    return this.states[this.active]
   }
 
-  protected animate(): void {
+  protected stateTransform(action: string): boolean {
+    const state = this.getState()
+    let newActiveState = null
+    if (typeof state[action] === 'function') {
+      newActiveState = state[action]()
+      if (this.active !== newActiveState) {
+        this.active = newActiveState
+        return true
+      }
+      return false
+    }
+    return false
+  }
+
+  protected animate(actionType: keyof IIconStateAction): void {
     if (!this.override && this._animing) {
-      return
+      return /* 不允许覆盖未完成动画 */
     }
     let from = this.states[this.active].path
     if (this._animing) {
       from = this.$icon.getAttribute('d')
       anime.remove(this.$icon)
     }
-    this.stateTransform('click')
-    const to = this.states[this.active].path
-    this.anime = anime({
-      targets: this.$icon,
-      d: [
-        from,
-        to,
-      ],
-      easing: 'easeOutCubic',
-      duration: this.duration,
-      begin: () => {
-        this._animing = true
-      },
-      complete: () => {
-        this._animing = false
-      },
-    })
+    if (this.stateTransform(actionType)) {
+      const to = this.states[this.active].path
+      this.anime = anime({
+        targets: this.$icon,
+        d: [
+          from,
+          to,
+        ],
+        easing: 'easeOutCubic',
+        duration: this.duration,
+        begin: () => {
+          this._animing = true
+        },
+        complete: () => {
+          this._animing = false
+        },
+      })
+    }
   }
 
   protected applyColor(): void {
