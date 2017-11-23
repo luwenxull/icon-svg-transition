@@ -1,6 +1,5 @@
 /// <reference types="animejs" />
 import anime = require('animejs');
-import { Selection } from 'd3-selection';
 export interface IIcon {
     apply(parent: HTMLElement): void;
 }
@@ -30,8 +29,8 @@ export default abstract class Icon implements IIcon {
     protected active: keyof IIconStates;
     protected _animing: boolean;
     protected anime: anime.AnimeInstance;
-    protected $svg: Selection<HTMLElement, any, HTMLElement, any>;
-    protected $icon: Selection<HTMLElement, any, HTMLElement, any>;
+    protected $svg: SVGGElement;
+    protected $icon: SVGGElement;
     constructor(options: IIconOption);
     apply(parent: HTMLElement): void;
     protected stateTransform(action: string): void;

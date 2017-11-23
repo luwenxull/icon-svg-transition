@@ -1,5 +1,4 @@
 import anime = require('animejs')
-import { select, Selection } from 'd3-selection'
 import forEach = require('lodash/forEach')
 import { warn } from './util'
 
@@ -38,8 +37,8 @@ export default abstract class Icon implements IIcon {
   protected active: keyof IIconStates
   protected _animing: boolean = false
   protected anime: anime.AnimeInstance = null
-  protected $svg: Selection<HTMLElement, any, HTMLElement, any> = null
-  protected $icon: Selection<HTMLElement, any, HTMLElement, any> = null
+  protected $svg: SVGGElement = null
+  protected $icon: SVGGElement = null
   constructor(options: IIconOption) {
     forEach(options, (value, key) => {
       if (allowedOptions.has(key)) {
@@ -51,15 +50,17 @@ export default abstract class Icon implements IIcon {
   }
 
   public apply(parent: HTMLElement): void {
-    this.$svg = select(parent).append('svg')
-    this.$svg.attr('width', this.size[0]).attr('height', this.size[1]).attr('viewBox', '0 0 24 24')
-    this.$icon = this.$svg.append('path')
-    this.$icon
-      .style('stroke-width', this.strokeWidth)
-      .style('stroke-lineCap', 'round')
-      .style('transform-origin', '50%')
-      .attr('d', this.states[this.active].path)
-    this.$svg.on('click', () => {
+    this.$svg = parent.appendChild(document.createElementNS('http://www.w3.org/2000/svg', 'svg'))
+    this.$svg.setAttribute('width', String(this.size[0]))
+    this.$svg.setAttribute('height', String(this.size[1]))
+    this.$svg.setAttribute('viewBox', '0 0 24 24')
+    this.$icon = this.$svg.appendChild(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
+    this.$icon.setAttribute('d', this.states[this.active].path)
+    const style = this.$icon.style
+    style.setProperty('stroke-width', String(this.strokeWidth))
+    style.setProperty('stroke-lineCap', 'round')
+    style.setProperty('transform-origin', '50%')
+    this.$svg.addEventListener('click', () => {
       this.animate()
       this.applyColor()
     })
@@ -76,13 +77,13 @@ export default abstract class Icon implements IIcon {
     }
     let from = this.states[this.active].path
     if (this._animing) {
-      from = this.$icon.attr('d')
-      anime.remove(this.$icon.node())
+      from = this.$icon.getAttribute('d')
+      anime.remove(this.$icon)
     }
     this.stateTransform('click')
     const to = this.states[this.active].path
     this.anime = anime({
-      targets: this.$icon.node(),
+      targets: this.$icon,
       d: [
         from,
         to,
@@ -99,8 +100,9 @@ export default abstract class Icon implements IIcon {
   }
 
   protected applyColor(): void {
+    const style = this.$icon.style
     forEach(this.states[this.active].style, (value, key) => {
-      this.$icon.style(key, value)
+      style.setProperty(key, value)
     })
   }
 }

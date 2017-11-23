@@ -34,7 +34,7 @@ class BurgeCloseIcon extends Icon_1.default {
     animate() {
         this.rotate += 180;
         anime({
-            targets: this.$icon.node(),
+            targets: this.$icon,
             rotate: this.rotate,
             easing: 'easeOutCubic',
             duration: this.duration,

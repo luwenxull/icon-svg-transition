@@ -1,4 +1,3 @@
-import { select } from 'd3-selection'
 import Icon, { IIconOption, IIconState, IIconStates } from '../Icon'
 import pause from './pause'
 import play from './play'

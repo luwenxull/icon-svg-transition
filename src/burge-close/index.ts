@@ -1,5 +1,4 @@
 import anime = require('animejs')
-import { select } from 'd3-selection'
 import Icon, { IIconOption, IIconState, IIconStates } from '../Icon'
 import burge from './burge'
 import close from './close'
@@ -51,7 +50,7 @@ export default class BurgeCloseIcon extends Icon {
   protected animate() {
     this.rotate += 180
     anime({
-      targets: this.$icon.node(),
+      targets: this.$icon,
       rotate: this.rotate,
       easing: 'easeOutCubic',
       duration: this.duration,
