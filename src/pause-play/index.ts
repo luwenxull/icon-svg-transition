@@ -39,6 +39,6 @@ export default class PausePlayIcon extends Icon {
           stroke: color,
         },
       },
-    })
+    } as PausePlayStates)
   }
 }

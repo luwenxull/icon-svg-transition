@@ -40,6 +40,6 @@ export default class BurgeCloseIcon extends Icon implements IBurgeCloseIcon {
           stroke: color,
         },
       },
-    })
+    } as BurgeCloseStates)
   }
 }

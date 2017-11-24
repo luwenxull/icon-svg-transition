@@ -1,19 +1,19 @@
 import Icon, { IIcon, IIconOption, IIconState } from '../Icon';
-export declare type ICheckCancelStateIndex = 'CHECK' | 'CANCEL';
-export declare type ICheckCancelStates = {
-    [prop in ICheckCancelStateIndex]: IIconState;
+export declare type CheckCancelStateIndex = 'CHECK' | 'CANCEL';
+export declare type CheckCancelStates = {
+    [prop in CheckCancelStateIndex]: IIconState;
 };
 export interface ICheckCancelOption extends IIconOption {
-    active: ICheckCancelStateIndex;
+    active: CheckCancelStateIndex;
     events?: {
         [prop: string]: (icon: ICheckCancelIcon) => void;
     };
 }
 export interface ICheckCancelIcon extends IIcon {
-    to(state: ICheckCancelStateIndex): void;
+    to(state: CheckCancelStateIndex): void;
 }
 export default class CheckCancelIcon extends Icon implements ICheckCancelIcon {
-    protected active: ICheckCancelStateIndex;
-    protected states: ICheckCancelStates;
+    protected active: CheckCancelStateIndex;
+    protected states: CheckCancelStates;
     constructor(options: ICheckCancelOption);
 }

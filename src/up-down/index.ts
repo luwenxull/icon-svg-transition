@@ -1,27 +1,27 @@
 import Icon, { IIcon, IIconOption, IIconState, IIconStates } from '../Icon'
-import double from './double'
+import down from './down'
 import up from './up'
 
-export type UpDoubleStateIndex = 'UP' | 'DOUBLE'
+export type UpDownStateIndex = 'UP' | 'DOWN'
 
-export type UpDoubleStates = {
-  [prop in UpDoubleStateIndex]: IIconState
+export type UpDownStates = {
+  [prop in UpDownStateIndex]: IIconState
 }
 
 export interface IUpDoubleOption extends IIconOption {
-  active: UpDoubleStateIndex
+  active: UpDownStateIndex
   events: {
     [prop: string]: (icon: IUpDoubleIcon) => void,
   }
 }
 
 export interface IUpDoubleIcon extends IIcon {
-  to(state: UpDoubleStateIndex): void
+  to(state: UpDownStateIndex): void
 }
 
 export default class UpDoubleIcon extends Icon implements IUpDoubleIcon {
-  protected active: UpDoubleStateIndex
-  protected states: UpDoubleStates
+  protected active: UpDownStateIndex
+  protected states: UpDownStates
   constructor(options: IUpDoubleOption) {
     const color = options.color || '#000'
     super(options, {
@@ -32,13 +32,13 @@ export default class UpDoubleIcon extends Icon implements IUpDoubleIcon {
           stroke: color,
         },
       },
-      DOUBLE: {
-        path: double(),
+      DOWN: {
+        path: down(),
         style: {
           fill: 'none',
           stroke: color,
         },
       },
-    } as UpDoubleStates)
+    } as UpDownStates)
   }
 }
