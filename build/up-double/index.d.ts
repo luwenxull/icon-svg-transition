@@ -1,18 +1,19 @@
-import Icon, { IIconOption, IIconState } from '../Icon';
-export declare type IUpDoubleStateIndex = 'UP' | 'DOUBLE';
+import Icon, { IIcon, IIconOption, IIconState } from '../Icon';
+export declare type UpDoubleStateIndex = 'UP' | 'DOUBLE';
 export declare type IUpDoubleStates = {
-    [prop in IUpDoubleStateIndex]: IUpDoubleState;
+    [prop in UpDoubleStateIndex]: IIconState;
 };
-export interface IUpDoubleState extends IIconState {
-    enter?(): IUpDoubleStateIndex;
-    leave?(): IUpDoubleStateIndex;
-}
 export interface IUpDoubleOption extends IIconOption {
-    active: IUpDoubleStateIndex;
+    active: UpDoubleStateIndex;
+    events: {
+        [prop: string]: (icon: IUpDoubleIcon) => void;
+    };
 }
-export default class UpDoubleIcon extends Icon {
-    protected active: IUpDoubleStateIndex;
+export interface IUpDoubleIcon extends IIcon {
+    to(state: UpDoubleStateIndex): void;
+}
+export default class UpDoubleIcon extends Icon implements IUpDoubleIcon {
+    protected active: UpDoubleStateIndex;
     protected states: IUpDoubleStates;
     constructor(options: IUpDoubleOption);
-    protected bindActionEvents(): void;
 }

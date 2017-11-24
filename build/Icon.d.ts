@@ -2,13 +2,11 @@
 import anime = require('animejs');
 export interface IIcon {
     apply(parent: HTMLElement): void;
+    to(state: keyof IIconStates): void;
+    isAnimating(): boolean;
+    toggle(): void;
 }
-export interface IIconStateAction {
-    enter?(): keyof IIconStates;
-    click?(): keyof IIconStates;
-    leave?(): keyof IIconStates;
-}
-export interface IIconState extends IIconStateAction {
+export interface IIconState {
     path: string;
     style: object;
 }
@@ -22,26 +20,29 @@ export interface IIconOption {
     strokeWidth?: number;
     duration?: number;
     override?: boolean;
-    events?: object;
+    events?: {
+        [prop: string]: (icon: IIcon) => void;
+    };
 }
 export default abstract class Icon implements IIcon {
-    protected color: string;
+    protected states: IIconStates;
     protected size: number[];
     protected strokeWidth: number;
     protected duration: number;
     protected override: boolean;
     protected events: object;
-    protected states: IIconStates;
     protected active: keyof IIconStates;
     protected _animing: boolean;
     protected anime: anime.AnimeInstance;
     protected $svg: SVGGElement;
     protected $icon: SVGGElement;
-    constructor(options: IIconOption);
+    constructor(options: IIconOption, states: IIconStates);
     apply(parent: HTMLElement): void;
-    protected bindActionEvents(): void;
+    to(state: keyof IIconStates): void;
+    isAnimating(): boolean;
+    toggle(): void;
     protected getState(): IIconState;
-    protected stateTransform(action: string): boolean;
-    protected animate(actionType: keyof IIconStateAction): void;
+    protected animate(state: keyof IIconStates): void;
     protected applyColor(): void;
+    private checkIfStateValid(state);
 }

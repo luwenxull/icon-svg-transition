@@ -5,29 +5,23 @@ const burge_1 = require("./burge");
 const close_1 = require("./close");
 class BurgeCloseIcon extends Icon_1.default {
     constructor(options) {
-        super(options);
-        this.states = {
+        const color = options.color || '#000';
+        super(options, {
             BURGE: {
                 path: burge_1.default(),
                 style: {
                     fill: 'none',
-                    stroke: this.color,
-                },
-                click: () => {
-                    return 'CLOSE';
+                    stroke: color,
                 },
             },
             CLOSE: {
                 path: close_1.default(),
                 style: {
                     fill: 'none',
-                    stroke: this.color,
-                },
-                click: () => {
-                    return 'BURGE';
+                    stroke: color,
                 },
             },
-        };
+        });
     }
 }
 exports.default = BurgeCloseIcon;

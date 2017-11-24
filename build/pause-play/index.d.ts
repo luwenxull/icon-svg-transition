@@ -1,16 +1,19 @@
-import Icon, { IIconOption, IIconState } from '../Icon';
-export declare type IPausePlayStateIndex = 'PLAY' | 'PAUSE';
-export declare type IPausePlayStates = {
-    [prop in IPausePlayStateIndex]: IPausePlayState;
+import Icon, { IIcon, IIconOption, IIconState } from '../Icon';
+export declare type PausePlayStateIndex = 'PLAY' | 'PAUSE';
+export declare type PausePlayStates = {
+    [prop in PausePlayStateIndex]: IIconState;
 };
-export interface IPausePlayState extends IIconState {
-    click(): IPausePlayStateIndex;
-}
 export interface IPausePlayOption extends IIconOption {
-    active: IPausePlayStateIndex;
+    active: PausePlayStateIndex;
+    events?: {
+        [prop: string]: (icon: IPausePlayIcon) => void;
+    };
+}
+export interface IPausePlayIcon extends IIcon {
+    to(state: PausePlayStateIndex): void;
 }
 export default class PausePlayIcon extends Icon {
-    protected active: IPausePlayStateIndex;
-    protected states: IPausePlayStates;
+    protected active: PausePlayStateIndex;
+    protected states: PausePlayStates;
     constructor(options: IPausePlayOption);
 }

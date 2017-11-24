@@ -5,30 +5,23 @@ const cancel_1 = require("./cancel");
 const check_1 = require("./check");
 class CheckCancelIcon extends Icon_1.default {
     constructor(options) {
-        super(options);
-        this.rotate = 0;
-        this.states = {
+        const color = options.color || '#000';
+        super(options, {
             CHECK: {
                 path: check_1.default(),
                 style: {
                     fill: 'none',
-                    stroke: this.color,
-                },
-                click: () => {
-                    return 'CANCEL';
+                    stroke: color,
                 },
             },
             CANCEL: {
                 path: cancel_1.default(),
                 style: {
                     fill: 'none',
-                    stroke: this.color,
-                },
-                click: () => {
-                    return 'CHECK';
+                    stroke: color,
                 },
             },
-        };
+        });
     }
 }
 exports.default = CheckCancelIcon;

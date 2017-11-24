@@ -5,29 +5,23 @@ const pause_1 = require("./pause");
 const play_1 = require("./play");
 class PausePlayIcon extends Icon_1.default {
     constructor(options) {
-        super(options);
-        this.states = {
+        const color = options.color || '#000';
+        super(options, {
             PLAY: {
                 path: play_1.default(),
                 style: {
-                    fill: this.color,
-                    stroke: this.color,
-                },
-                click: () => {
-                    return 'PAUSE';
+                    fill: color,
+                    stroke: color,
                 },
             },
             PAUSE: {
                 path: pause_1.default(),
                 style: {
                     fill: 'none',
-                    stroke: this.color,
-                },
-                click: () => {
-                    return 'PLAY';
+                    stroke: color,
                 },
             },
-        };
+        });
     }
 }
 exports.default = PausePlayIcon;

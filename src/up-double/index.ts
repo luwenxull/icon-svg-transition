@@ -1,57 +1,44 @@
-import Icon, { IIconOption, IIconState, IIconStates } from '../Icon'
+import Icon, { IIcon, IIconOption, IIconState, IIconStates } from '../Icon'
 import double from './double'
 import up from './up'
 
-export type IUpDoubleStateIndex = 'UP' | 'DOUBLE'
+export type UpDoubleStateIndex = 'UP' | 'DOUBLE'
 
 export type IUpDoubleStates = {
-  [prop in IUpDoubleStateIndex]: IUpDoubleState
-}
-
-export interface IUpDoubleState extends IIconState {
-  enter?(): IUpDoubleStateIndex
-  leave?(): IUpDoubleStateIndex
+  [prop in UpDoubleStateIndex]: IIconState
 }
 
 export interface IUpDoubleOption extends IIconOption {
-  active: IUpDoubleStateIndex
+  active: UpDoubleStateIndex
+  events: {
+    [prop: string]: (icon: IUpDoubleIcon) => void,
+  }
 }
 
-export default class UpDoubleIcon extends Icon {
-  protected active: IUpDoubleStateIndex
+export interface IUpDoubleIcon extends IIcon {
+  to(state: UpDoubleStateIndex): void
+}
+
+export default class UpDoubleIcon extends Icon implements IUpDoubleIcon {
+  protected active: UpDoubleStateIndex
   protected states: IUpDoubleStates
   constructor(options: IUpDoubleOption) {
-    super(options)
-    this.states = {
+    const color = options.color || '#000'
+    super(options, {
       UP: {
         path: up(),
         style: {
-          fill: this.color,
-          stroke: this.color,
-        },
-        enter: () => {
-          return 'DOUBLE'
+          fill: color,
+          stroke: color,
         },
       },
       DOUBLE: {
         path: double(),
         style: {
           fill: 'none',
-          stroke: this.color,
-        },
-        leave: () => {
-          return 'UP'
+          stroke: color,
         },
       },
-    }
-  }
-
-  protected bindActionEvents() {
-    this.$svg.addEventListener('mouseenter', () => {
-      this.animate('enter')
-    })
-    this.$svg.addEventListener('mouseleave', () => {
-      this.animate('leave')
     })
   }
 }

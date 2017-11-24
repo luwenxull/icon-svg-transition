@@ -1,48 +1,45 @@
 import anime = require('animejs')
-import Icon, { IIconOption, IIconState, IIconStates } from '../Icon'
+import Icon, { IIcon, IIconOption, IIconState, IIconStates } from '../Icon'
 import burge from './burge'
 import close from './close'
 
-export type IBurgeCloseStateIndex = 'BURGE' | 'CLOSE'
+export type BurgeCloseStateIndex = 'BURGE' | 'CLOSE'
 
-export type IBurgeCloseStates = {
-  [prop in IBurgeCloseStateIndex]: IBurgeCloseState
-}
-
-export interface IBurgeCloseState extends IIconState {
-  click(): IBurgeCloseStateIndex
+export type BurgeCloseStates = {
+  [prop in BurgeCloseStateIndex]: IIconState
 }
 
 export interface IBurgeCloseOption extends IIconOption {
-  active: IBurgeCloseStateIndex
+  active: BurgeCloseStateIndex
+  events?: {
+    [prop: string]: (icon: IBurgeCloseIcon) => void,
+  }
 }
 
-export default class BurgeCloseIcon extends Icon {
-  protected active: IBurgeCloseStateIndex
-  protected states: IBurgeCloseStates
+export interface IBurgeCloseIcon extends IIcon {
+  to(state: BurgeCloseStateIndex): void
+}
+
+export default class BurgeCloseIcon extends Icon implements IBurgeCloseIcon {
+  protected active: BurgeCloseStateIndex
+  protected states: BurgeCloseStates
   constructor(options: IBurgeCloseOption) {
-    super(options)
-    this.states = {
+    const color = options.color || '#000'
+    super(options, {
       BURGE: {
         path: burge(),
         style: {
           fill: 'none',
-          stroke: this.color,
-        },
-        click: () => {
-          return 'CLOSE'
+          stroke: color,
         },
       },
       CLOSE: {
         path: close(),
         style: {
           fill: 'none',
-          stroke: this.color,
-        },
-        click: () => {
-          return 'BURGE'
+          stroke: color,
         },
       },
-    }
+    })
   }
 }

@@ -1,47 +1,44 @@
-import Icon, { IIconOption, IIconState, IIconStates } from '../Icon'
+import Icon, { IIcon, IIconOption, IIconState, IIconStates } from '../Icon'
 import pause from './pause'
 import play from './play'
 
-export type IPausePlayStateIndex = 'PLAY' | 'PAUSE'
+export type PausePlayStateIndex = 'PLAY' | 'PAUSE'
 
-export type IPausePlayStates = {
-  [prop in IPausePlayStateIndex]: IPausePlayState
-}
-
-export interface IPausePlayState extends IIconState {
-  click(): IPausePlayStateIndex
+export type PausePlayStates = {
+  [prop in PausePlayStateIndex]: IIconState
 }
 
 export interface IPausePlayOption extends IIconOption {
-  active: IPausePlayStateIndex
+  active: PausePlayStateIndex
+  events?: {
+    [prop: string]: (icon: IPausePlayIcon) => void,
+  }
+}
+
+export interface IPausePlayIcon extends IIcon {
+  to(state: PausePlayStateIndex): void
 }
 
 export default class PausePlayIcon extends Icon {
-  protected active: IPausePlayStateIndex
-  protected states: IPausePlayStates
+  protected active: PausePlayStateIndex
+  protected states: PausePlayStates
   constructor(options: IPausePlayOption) {
-    super(options)
-    this.states = {
+    const color = options.color || '#000'
+    super(options, {
       PLAY: {
         path: play(),
         style: {
-          fill: this.color,
-          stroke: this.color,
-        },
-        click: () => {
-          return 'PAUSE'
+          fill: color,
+          stroke: color,
         },
       },
       PAUSE: {
         path: pause(),
         style: {
           fill: 'none',
-          stroke: this.color,
-        },
-        click: () => {
-          return 'PLAY'
+          stroke: color,
         },
       },
-    }
+    })
   }
 }

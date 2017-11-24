@@ -8,18 +8,33 @@ const playPause = new PausePlay({
   size: [60, 60],
   strokeWidth: 2,
   override: true,
+  events: {
+    click: icon => {
+      icon.toggle()
+    },
+  },
 })
 const burgeClose = new BurgeClose({
   active: 'BURGE',
   color: '#a14555',
   size: [60, 60],
   strokeWidth: 2,
+  events: {
+    click: icon => {
+      icon.toggle()
+    },
+  },
 })
 const checkCancel = new CheckCancel({
   active: 'CHECK',
   color: '#b1ed89',
   size: [60, 60],
   strokeWidth: 2,
+  events: {
+    click: icon => {
+      icon.toggle()
+    },
+  },
 })
 const upDouble = new UpDouble({
   active: 'UP',
@@ -28,7 +43,12 @@ const upDouble = new UpDouble({
   strokeWidth: 2,
   duration: 200,
   events: {
-    click: console.log,
+    mouseenter: (e) => {
+      e.to('DOUBLE')
+    },
+    mouseleave: icon => {
+      icon.to('UP')
+    },
   },
 })
 playPause.apply(document.getElementById('app'))
